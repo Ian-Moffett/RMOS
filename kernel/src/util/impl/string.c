@@ -12,58 +12,35 @@ size_t strlen(const char* const STR) {
 }
 
 
-char* dec2str(int dec) {
-    unsigned char isNeg = 0;
+char* dec2str(int number) {
+    static uint8_t dec_string[80];
+    uint8_t i = 0, j, temp;
+    uint8_t negative = 0;       // Is number negative?
 
-    if (dec < 0) {
-        isNeg = 1;
-        dec = dec * -1;
+    if (number == 0) dec_string[i++] = '0'; // If passed in 0, print a 0
+    else if (number < 0)  {
+        negative = 1;       // Number is negative
+        number = -number;   // Easier to work with positive values
     }
 
-    for (int i = 0; i < 25; ++i) {
-        res[i] = '\0';
+    while (number > 0) {
+        dec_string[i] = (number % 10) + '0';  
+        number /= 10;                           
+        i++;
     }
 
-    char s[25];
-    unsigned char ridx = 0;
-    unsigned char residx = 0;
+    if (negative) dec_string[i++] = '-';   
 
-    while (dec) {
-        s[ridx] = '0' + dec % 10;
-        dec /= 10;
-        ++ridx;
+    dec_string[i] = '\0';   
+
+    i--;   
+    for (j = 0; j < i; j++, i--) {
+        temp          = dec_string[j];
+        dec_string[j] = dec_string[i];
+        dec_string[i] = temp;
     }
 
-    if (isNeg) {
-        res[0] = '-';
-        ++residx;
-    }
-
-    for (int i = strlen(s) - 1; i > -1; --i) {
-        res[residx] = s[i];
-        ++residx;
-    }
-
-    res[residx] = '\0';
-
-    unsigned char rl = 1;
-
-    for (int i = 0; i < strlen(res) && rl; ++i) {
-        if (res[i] < '0' && res[i] > '9') {
-            rl = 0;
-            const char* const ERR = "UNKNOWN";
-
-            for (int j = 0; j < strlen(res); ++j) {
-                res[j] = '\0';
-            }
-
-            for (int j = 0; j < strlen(ERR); ++j) {
-                res[j] = ERR[j];
-            }
-        }
-    }
-
-    return res;
+    return dec_string;
 }
 
 
