@@ -1,5 +1,5 @@
-#include "drivers/FrameBuffer.h"
-#include "drivers/Keyboard.h"
+#include "drivers/video/FrameBuffer.h"
+#include "drivers/ps2/Keyboard.h"
 #include "memory/GDT.h"
 #include "interrupts/IDT.h"
 #include "interrupts/exceptions.h"

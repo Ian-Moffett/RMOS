@@ -2,8 +2,8 @@
 #define EXCEPTIONS_H
 
 #include "IDT.h"
-#include "../drivers/FrameBuffer.h"
-#include "../drivers/pcspkr.h"
+#include "../drivers/video/FrameBuffer.h"
+#include "../drivers/audio/pcspkr.h"
 #include "../util/string.h"
 
 
