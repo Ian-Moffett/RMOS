@@ -4,8 +4,10 @@ char keyBuf;
 
 
 __attribute__((interrupt)) void kb_isr(int_frame_t* frame) {
+    extern canvas_t canvas; 
     unsigned int scancode = inportb(0x60);
     pic_send_EOI(1);
+
 }
 
 

@@ -8,7 +8,7 @@ void outportb(uint16_t port, uint8_t byte) {
 
 uint8_t inportb(uint16_t port) {
     uint8_t res;
-    __asm__ __volatile__("in %%dx, %%al" : "=a" (res));
+    __asm__ __volatile__("in %%dx, %%al" : "=a" (res) : "d" (port));
     return res;
 }
 

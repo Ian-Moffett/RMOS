@@ -11,6 +11,12 @@ canvas_t canvas = {
     .prevX = 10,
 };
 
+__attribute__((interrupt)) void test(int_frame_t*) {
+    kwrite(&canvas, "AUDWDIWDUIO\n", 0xFFFFFFFF);
+    inportb(0x60);
+    outportb(0x20, 0x20);
+}
+
 
 void _start(framebuffer_t* lfb, psf1_font_t* font) {
     canvas.lfb = lfb;
@@ -19,11 +25,13 @@ void _start(framebuffer_t* lfb, psf1_font_t* font) {
     gdt_install();
     
     set_idt_vector(0x0, div0_handler, TRAP_GATE_FLAG);
-    set_idt_vector(0x21, div0_handler, INT_GATE_FLAG);
+    set_idt_vector(0x21, kb_isr, INT_GATE_FLAG);
+
+    idt_install();
 
     __asm__ __volatile__("sti");
 
-    idt_install();
+    
     unmask_irq1();
 
     while (1) {
