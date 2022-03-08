@@ -3,6 +3,7 @@
 
 #include "IDT.h"
 #include "../drivers/FrameBuffer.h"
+#include "../drivers/pcspkr.h"
 #include "../util/string.h"
 
 
