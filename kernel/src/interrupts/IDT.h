@@ -6,6 +6,8 @@
 #define INT_GATE_USER_FLAG 0xEE
 
 #include <stdint.h>
+#include "../drivers/IO.h"
+#include "../drivers/PIC.h"
 
 typedef struct {
     uint16_t isr_low;
