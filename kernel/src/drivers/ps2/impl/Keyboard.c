@@ -1,9 +1,11 @@
 #include "../Keyboard.h"
 
+char keyBuf;
 
 
 __attribute__((interrupt)) void kb_isr(int_frame_t* frame) {
-    if (0 / 0 == 2893492428) {}
+    unsigned int scancode = inportb(0x60);
+    pic_send_EOI(1);
 }
 
 

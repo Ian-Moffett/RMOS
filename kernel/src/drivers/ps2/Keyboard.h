@@ -3,6 +3,7 @@
 
 #include "../../interrupts/IDT.h"
 #include "../IO/IO.h"
+#include "../IO/PIC.h"
 
 __attribute__((interrupt)) void kb_isr(int_frame_t* frame);
 
