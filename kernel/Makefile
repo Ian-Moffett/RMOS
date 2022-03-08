@@ -6,7 +6,7 @@ LDS = link.ld
 CC = gcc
 ASMC = nasm
 
-CFLAGS = -ffreestanding -fshort-wchar -mgeneral-regs-only
+CFLAGS = -ffreestanding -fshort-wchar -mgeneral-regs-only 
 LDFLAGS = -T $(LDS) -static -Bsymbolic -nostdlib
 
 SRCDIR := src
@@ -52,4 +52,4 @@ run:
 	qemu-system-x86_64 -drive file=$(BUILDDIR)/$(OSNAME).img -m 256M -cpu qemu64 -drive if=pflash,format=raw,unit=0,file="$(OVMFDIR)/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="$(OVMFDIR)/OVMF_VARS-pure-efi.fd" -net none -full-screen -monitor stdio -d int -no-reboot -D logfile.txt -M smm=off
 
 run_no_fs:
-	qemu-system-x86_64 -drive file=$(BUILDDIR)/$(OSNAME).img -m 256M -cpu qemu64 -drive if=pflash,format=raw,unit=0,file="$(OVMFDIR)/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="$(OVMFDIR)/OVMF_VARS-pure-efi.fd" -net none -monitor stdio -d int -no-reboot -D logfile.txt -M smm=off -soundhw pcspk
+	qemu-system-x86_64 -drive file=$(BUILDDIR)/$(OSNAME).img -m 256M -cpu qemu64 -drive if=pflash,format=raw,unit=0,file="$(OVMFDIR)/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="$(OVMFDIR)/OVMF_VARS-pure-efi.fd" -net none -monitor stdio -d int -no-reboot -D logfile.txt -M smm=off 

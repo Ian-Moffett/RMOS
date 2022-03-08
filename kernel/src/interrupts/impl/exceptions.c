@@ -44,6 +44,6 @@ static void crapout(unsigned char vector, int_frame_t* frame) {
 
 
 __attribute__((interrupt)) void div0_handler(int_frame_t* frame) {
-    beeep(100);             // Lmaoooo.
+    beeep(48);             // Lmaoooo.
     crapout(0x0, frame);
 }
