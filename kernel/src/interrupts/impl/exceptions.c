@@ -56,3 +56,8 @@ __attribute__((interrupt)) void div0_handler(int_frame_t* frame) {
 __attribute__((interrupt)) void gpf_handler(int_frame_t* frame) {
     crapout(0xD, frame, 0);
 }
+
+
+__attribute__((interrupt)) void page_fault_handler(int_frame_t* frame) {
+    crapout(0xE, frame, 1);
+}
