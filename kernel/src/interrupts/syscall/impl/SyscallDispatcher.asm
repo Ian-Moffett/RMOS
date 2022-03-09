@@ -10,9 +10,9 @@ __dispatch_syscall:
     cmp rax, 0
     jl .dispatch_failure
 
-    mov rdx, [syscall_table]
+    mov rdx, syscall_table
     add rdx, rax
-    call rdx
+    call [rdx]
     iret
 
     .dispatch_failure:

@@ -2,7 +2,7 @@
 #define SYS_FAULT_H
 
 
-void __gpf();
+void __fault();
 
 
 #endif
