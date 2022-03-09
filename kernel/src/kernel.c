@@ -3,11 +3,9 @@
 #include "drivers/memory/GDT.h"
 #include "drivers/memory/MemoryMap.h"
 #include "drivers/memory/heap/Heap.h"
+#include "drivers/timer/PIT.h"
 #include "interrupts/IDT.h"
 #include "interrupts/exceptions.h"
-
-#define DEFAULT_SHELL_BG 0x00000000
-#define DEFAULT_SHELL_FG 0xFFFFFFFF
 
 
 canvas_t canvas = {
@@ -30,7 +28,8 @@ void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
     set_idt_vector(0xD, gpf_handler, TRAP_GATE_FLAG);
     set_idt_vector(0xE, page_fault_handler, TRAP_GATE_FLAG);
     set_idt_vector(0x21, kb_isr, INT_GATE_FLAG);
-
+    set_idt_vector(0x20, pit_isr, INT_GATE_FLAG);
+        
     idt_install();
 
     uint64_t mMapEntries = meminfo.mSize / meminfo.mDescriptorSize;
@@ -55,7 +54,11 @@ void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
         }
     }
 
-    unmask_irq1();
+    pitSetDivisor(18);
+    outportb(PIC1_DATA, inportb(PIC1_DATA) ^ 1);
+    kwrite(&canvas, "Guess what?\n", 0xFFFFFFFF);
+    sleep(20);
+    kwrite(&canvas, "Your mom!\n", 0xFFFFFF);
 
     while (1) {
         __asm__ __volatile__("hlt");
