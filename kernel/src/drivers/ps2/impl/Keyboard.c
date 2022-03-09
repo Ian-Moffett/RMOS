@@ -1,6 +1,6 @@
 #include "../Keyboard.h"
 
-char keyBuf;
+keystroke_t keyBuf;
 unsigned char keyBufFull = 0;
 extern canvas_t canvas;
 
@@ -22,7 +22,8 @@ __attribute__((interrupt)) void kb_isr(int_frame_t* frame) {
             outportb(0x64, 0xFE);   // 8042 reset.
         }
 
-        keyBuf = c;
+        keyBuf.ch = c;
+        keyBuf.scancode = scancode;
         keyBufFull = 1;
     }
 

@@ -6,6 +6,9 @@
 #include "interrupts/IDT.h"
 #include "interrupts/exceptions.h"
 
+#define DEFAULT_SHELL_BG 0x00000000
+#define DEFAULT_SHELL_FG 0xFFFFFFFF
+
 
 canvas_t canvas = {
     .x = 10,
@@ -13,24 +16,6 @@ canvas_t canvas = {
     .prevX = 10,
 };
 
-
-// KSHELL (RMOS boot shell).
-static void kshell_mainloop() {
-    extern char keyBuf;
-    extern unsigned char keyBufFull;
-
-    kwrite(&canvas, "root@RMOS> ", 0xFFFFFFFF);
-
-    while (1) {
-        __asm__ __volatile__("hlt");
-        if (keyBufFull) {
-            char fullkey[2] = "\0\0";
-            fullkey[0] = keyBuf;
-            kwrite(&canvas, fullkey, 0xFFFFFFFF);
-            keyBufFull = 0;
-        }
-    }
-}
 
 
 void* heap = NULL;

@@ -62,7 +62,6 @@ void* kmalloc(size_t blksize) {
 }
 
 
-
 void* kfree(void* blk) {
     memblock_t* curFrame = mem_head;
 
@@ -72,4 +71,17 @@ void* kfree(void* blk) {
 
     curFrame->free = 0x1;
     allocated -= curFrame->size;
+}
+
+
+
+void* krealloc(void* blk, size_t blksize) {
+    void* newBlk = kmalloc(blksize);
+
+    if (!(newBlk)) return NULL;
+
+    memblock_t* oldBlk = (memblock_t*)blk;
+    strncpy((char*)newBlk, (char*)blk, oldBlk->size);
+    kfree(blk);
+    return newBlk;
 }

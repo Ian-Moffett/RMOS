@@ -89,7 +89,7 @@ uint8_t* hex2str(uint32_t hex_num) {
     return hex_string;
 }
 
-uint8_t* strncpy(uint8_t *dst, const uint8_t *src, const uint8_t len) {
+uint8_t* strncpy(uint8_t* dst, const uint8_t* src, const uint8_t len) {
     for (uint8_t i = 0; src[i] && i < len; i++)
         dst[i] = src[i];
 

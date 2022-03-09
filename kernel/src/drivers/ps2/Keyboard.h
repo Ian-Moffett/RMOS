@@ -13,6 +13,12 @@
 #endif
 
 
+typedef struct {
+    unsigned int scancode;
+    char ch;
+} keystroke_t;
+
+
 __attribute__((interrupt)) void kb_isr(int_frame_t* frame);
 
 void unmask_irq1();
