@@ -2,6 +2,7 @@
 #include "drivers/ps2/Keyboard.h"
 #include "drivers/memory/GDT.h"
 #include "drivers/memory/MemoryMap.h"
+#include "drivers/memory/virtmem/paging.h"
 #include "interrupts/IDT.h"
 #include "interrupts/exceptions.h"
 
@@ -12,20 +13,17 @@ canvas_t canvas = {
     .prevX = 10,
 };
 
-__attribute__((interrupt)) void test(int_frame_t*) {
-    kwrite(&canvas, "AUDWDIWDUIO\n", 0xFFFFFFFF);
-    inportb(0x60);
-    outportb(0x20, 0x20);
-}
-
 
 void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
     canvas.lfb = lfb;
     canvas.font = font;
+    
+    readMemMap(meminfo.mMap, meminfo.mSize, meminfo.mDescriptorSize);
 
     gdt_install();
     
     set_idt_vector(0x0, div0_handler, TRAP_GATE_FLAG);
+    set_idt_vector(0xD, gpf_handler, TRAP_GATE_FLAG);
     set_idt_vector(0x21, kb_isr, INT_GATE_FLAG);
 
     idt_install();

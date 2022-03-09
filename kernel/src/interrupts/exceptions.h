@@ -8,6 +8,7 @@
 
 
 __attribute__((interrupt)) void div0_handler(int_frame_t* frame);
+__attribute__((interrupt)) void gpf_handler(int_frame_t* frame);
 
 
 #endif

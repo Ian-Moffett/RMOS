@@ -1,9 +1,9 @@
 #include "../paging.h"
 
 
-static uint64_t freeMem;
-static uint64_t reservedMem;
-static uint64_t usedMem;
+static uint64_t freeMem = 0;
+static uint64_t reservedMem = 0;
+static uint64_t usedMem = 0;
 static bitmap_t bitmap;
 
 
@@ -82,6 +82,7 @@ void readMemMap(memdesc_t* mMap, size_t mMapSize, size_t mDescSize) {
     }
 
     uint64_t memSz = getMemSize(mMap, mMapEntries, mDescSize);
+
     freeMem = memSz;
     uint64_t bmpSize = memSz / 4096 / 8 + 1;
 

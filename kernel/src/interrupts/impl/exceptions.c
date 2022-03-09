@@ -1,7 +1,7 @@
 #include "../exceptions.h"
 
 
-static void crapout(unsigned char vector, int_frame_t* frame) {
+static void crapout(unsigned char vector, int_frame_t* frame, unsigned char memdump) {
     extern canvas_t canvas;
     clearScreen(&canvas, 0xFF0000);
     kwrite(&canvas, "FATAL CPU EXCEPTION: ", 0xFFFFFFFF);
@@ -11,7 +11,7 @@ static void crapout(unsigned char vector, int_frame_t* frame) {
         kwrite(&canvas, "\n\nDUMBASS_DETECTED, YOU DID A STUPID! (also, don't divide by zero lmaoo)\n\n", 0xFFFFFFFF);
     }
 
-    kwrite(&canvas, "\n<==== INTERRUPT FRAME DUMP ====>\n\n", 0xFFFFFFFF);
+    kwrite(&canvas, "\n\n<==== INTERRUPT FRAME DUMP ====>\n\n", 0xFFFFFFFF);
     kwrite(&canvas, "RIP: ", 0xFFFFFFFF);
     kwrite(&canvas, hex2str(frame->rip), 0xFFFFFFFF);
     kwrite(&canvas, "\nCS: ", 0xFFFFFFFF);
@@ -22,6 +22,10 @@ static void crapout(unsigned char vector, int_frame_t* frame) {
     kwrite(&canvas, hex2str(frame->rsp), 0xFFFFFFFF);
     kwrite(&canvas, "\nSS: ", 0xFFFFFFFF);
     kwrite(&canvas, hex2str(frame->ss), 0xFFFFFFFF);
+
+    if (!(memdump)) {
+        __asm__ __volatile__("cli; hlt");
+    }
 
     kwrite(&canvas, "\n\n<==== PHYSICAL MEMORY DUMP ====>\n\n", 0xFFFFFFFF);
 
@@ -45,5 +49,10 @@ static void crapout(unsigned char vector, int_frame_t* frame) {
 
 __attribute__((interrupt)) void div0_handler(int_frame_t* frame) {
     beeep(48);             // Lmaoooo.
-    crapout(0x0, frame);
+    crapout(0x0, frame, 1);
+}
+
+
+__attribute__((interrupt)) void gpf_handler(int_frame_t* frame) {
+    crapout(0xD, frame, 0);
 }
