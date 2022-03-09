@@ -19,7 +19,7 @@ __attribute__((interrupt)) void kb_isr(int_frame_t* frame) {
         }
 
         if (scancode == 79) {
-            outportb(0x64, 0xFE);
+            outportb(0x64, 0xFE);   // 8042 reset.
         }
 
         keyBuf = c;
