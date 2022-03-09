@@ -14,8 +14,26 @@ canvas_t canvas = {
 };
 
 
-void* heap = NULL;
+// KSHELL (RMOS boot shell).
+static void kshell_mainloop() {
+    extern char keyBuf;
+    extern unsigned char keyBufFull;
 
+    kwrite(&canvas, "root@RMOS> ", 0xFFFFFFFF);
+
+    while (1) {
+        __asm__ __volatile__("hlt");
+        if (keyBufFull) {
+            char fullkey[2] = "\0\0";
+            fullkey[0] = keyBuf;
+            kwrite(&canvas, fullkey, 0xFFFFFFFF);
+            keyBufFull = 0;
+        }
+    }
+}
+
+
+void* heap = NULL;
 
 void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
     canvas.lfb = lfb;
@@ -31,9 +49,11 @@ void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
     idt_install();
 
     uint64_t mMapEntries = meminfo.mSize / meminfo.mDescriptorSize;
+    /*
     kwrite(&canvas, "AVAILABLE MEMORY: ", 0xFFFFFFFF);
     kwrite(&canvas, hex2str(getMemSize(meminfo.mMap, mMapEntries, meminfo.mDescriptorSize)), 0xFFFFFF);
     kwrite(&canvas, " BYTES\n", 0xFFFFFFFF);
+    */
 
     __asm__ __volatile__("sti");
 
@@ -46,12 +66,13 @@ void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
             // EfiConventionalMemory
             heap_init(desc->physAddr, desc->nPages * 4096 - 1);
             heap = desc->physAddr;
-            kwrite(&canvas, "HEAP SEGMENT ALLOCATED!\n", 0x000000FF);
             break;
         }
     }
 
     unmask_irq1();
+
+    kshell_mainloop();
 
     while (1) {
         __asm__ __volatile__("hlt");

@@ -1,6 +1,8 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
+#define RM_DEBUG
+
 #include "../../interrupts/IDT.h"
 #include "../IO/IO.h"
 #include "../IO/PIC.h"
