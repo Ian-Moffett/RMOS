@@ -1,6 +1,5 @@
 #include "../MemoryMap.h"
 
-
 const char* const MSEGMENTS[] = {
     "EfiReservedMemoryType",
     "EfiLoaderCode",
