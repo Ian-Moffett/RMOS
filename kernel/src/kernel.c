@@ -4,6 +4,8 @@
 #include "drivers/memory/MemoryMap.h"
 #include "interrupts/IDT.h"
 #include "interrupts/exceptions.h"
+#include "interrupts/syscall/syscall.h"
+#include "interrupts/syscall/sys_fault.h"
 
 
 canvas_t canvas = {
@@ -23,6 +25,7 @@ void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
     set_idt_vector(0xD, gpf_handler, TRAP_GATE_FLAG);
     set_idt_vector(0xE, page_fault_handler, TRAP_GATE_FLAG);
     set_idt_vector(0x21, kb_isr, INT_GATE_FLAG);
+    set_idt_vector(0x80, __dispatch_syscall, INT_GATE_USER_FLAG);
 
     idt_install();
 
