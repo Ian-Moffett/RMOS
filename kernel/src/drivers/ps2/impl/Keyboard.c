@@ -18,6 +18,10 @@ __attribute__((interrupt)) void kb_isr(int_frame_t* frame) {
             c -= 0x20;
         }
 
+        if (scancode == 79) {
+            outportb(0x64, 0xFE);
+        }
+
         keyBuf = c;
         keyBufFull = 1;
     }
