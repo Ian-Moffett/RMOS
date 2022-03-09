@@ -57,8 +57,6 @@ void _start(framebuffer_t* lfb, psf1_font_t* font, meminfo_t meminfo) {
 
     unmask_irq1();
 
-    kshell_mainloop();
-
     while (1) {
         __asm__ __volatile__("hlt");
     }
